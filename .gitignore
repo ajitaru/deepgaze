@@ -29,4 +29,5 @@
 
 # Folders
 build/
+__pycache__/
 *~
