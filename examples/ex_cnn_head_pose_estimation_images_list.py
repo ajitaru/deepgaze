@@ -68,9 +68,10 @@ def cnn_head_pose_estimation_images_list(inputFile, verbose=False, save_npy=True
     my_head_pose_estimator = CnnHeadPoseEstimator(sess) #Head pose estimation object
 
     # Load the weights from the configuration folders
-    my_head_pose_estimator.load_roll_variables(os.path.realpath("../etc/tensorflow/head_pose/roll/cnn_cccdd_30k.tf"))
-    my_head_pose_estimator.load_pitch_variables(os.path.realpath("../etc/tensorflow/head_pose/pitch/cnn_cccdd_30k.tf"))
-    my_head_pose_estimator.load_yaw_variables(os.path.realpath("../etc/tensorflow/head_pose/yaw/cnn_cccdd_30k"))
+    DEEPGAZE_EXAMPLES_DIR = os.path.dirname(os.path.realpath(__file__))
+    my_head_pose_estimator.load_roll_variables(os.path.realpath(os.path.join(DEEPGAZE_EXAMPLES_DIR, "../etc/tensorflow/head_pose/roll/cnn_cccdd_30k.tf")))
+    my_head_pose_estimator.load_pitch_variables(os.path.realpath(os.path.join(DEEPGAZE_EXAMPLES_DIR, "../etc/tensorflow/head_pose/pitch/cnn_cccdd_30k.tf")))
+    my_head_pose_estimator.load_yaw_variables(os.path.realpath(os.path.join(DEEPGAZE_EXAMPLES_DIR, "../etc/tensorflow/head_pose/yaw/cnn_cccdd_30k")))
 
     start_time = time.time()
 
@@ -101,14 +102,13 @@ def cnn_head_pose_estimation_images_list(inputFile, verbose=False, save_npy=True
                 poses[-1].append(yaw[0,0,0]/100)
     except KeyboardInterrupt:
         print("\n\nCtrl+C was pressed!\n\n")
-        return
 
     if save_npy:
-        print("Saving in npy file", npy_file_name)
+        print("Saving in npy file", npy_file_name, "....")
         np.save(npy_file_name, poses)
         print("Saved.")
     elif save_csv:
-        print("Saving in csv file", csv_file_name)
+        print("Saving in csv file", csv_file_name, "....")
         save_poses_in_csv(poses, csv_file_name=csv_file_name)
         print("Saved.")
 
