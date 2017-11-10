@@ -1,0 +1,8 @@
+ex_cnn_head_pose_estimation_images/1.jpg
+ex_cnn_head_pose_estimation_images/2.jpg
+ex_cnn_head_pose_estimation_images/3.jpg
+ex_cnn_head_pose_estimation_images/4.jpg
+ex_cnn_head_pose_estimation_images/5.jpg
+ex_cnn_head_pose_estimation_images/6.jpg
+ex_cnn_head_pose_estimation_images/7.jpg
+ex_cnn_head_pose_estimation_images/8.jpg
