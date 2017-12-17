@@ -83,7 +83,7 @@ def cnn_head_pose_estimation_images_list(inputFile, verbose=False, save_npy=True
         poses = []
 
     try:
-        for image_file in tqdm.tqdm(image_file_names):
+        for i, image_file in tqdm.tqdm(enumerate(image_file_names), total=(len(image_file_names))):
             if verbose:
                 tqdm.tqdm.write("Processing image " + image_file)
             elif save_csv:
@@ -102,6 +102,7 @@ def cnn_head_pose_estimation_images_list(inputFile, verbose=False, save_npy=True
                 poses[-1].append(roll[0,0,0]/25)
                 poses[-1].append(pitch[0,0,0]/45)
                 poses[-1].append(yaw[0,0,0]/100)
+
     except KeyboardInterrupt:
         print("\n\nCtrl+C was pressed!\n\n")
         return_val = 1
