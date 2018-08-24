@@ -48,6 +48,8 @@ def save_poses_in_csv(poses, csv_file_name="poses"):
 
 def cnn_head_pose_estimation_images_list(inputFile, verbose=False, save_npy=True, npy_file_name="poses", save_csv=False, csv_file_name="poses"):
 
+    return_val = 0
+
     # Read jpg file names
     if '.txt' in inputFile:
         try:
@@ -55,7 +57,7 @@ def cnn_head_pose_estimation_images_list(inputFile, verbose=False, save_npy=True
                 image_file_names = f.read().splitlines()
         except FileNotFoundError:
             print("\nERROR: File not found! Tried reading ", sys.argv[1], "\n")
-            sys.exit()
+            return 1
     # Image
     elif '.jpg' in inputFile or '.png' in inputFile:
         image_file_names = [inputFile]
@@ -81,7 +83,7 @@ def cnn_head_pose_estimation_images_list(inputFile, verbose=False, save_npy=True
         poses = []
 
     try:
-        for i, image_file in tqdm.tqdm(enumerate(image_file_names), total=len(image_file_names)):
+        for i, image_file in tqdm.tqdm(enumerate(image_file_names), total=(len(image_file_names))):
             if verbose:
                 tqdm.tqdm.write("Processing image " + image_file)
             elif save_csv:
@@ -102,8 +104,11 @@ def cnn_head_pose_estimation_images_list(inputFile, verbose=False, save_npy=True
                 poses[-1].append(roll[0,0,0]/25)
                 poses[-1].append(pitch[0,0,0]/45)
                 poses[-1].append(yaw[0,0,0]/100)
+
     except KeyboardInterrupt:
         print("\n\nCtrl+C was pressed!\n\n")
+        return_val = 1
+
 
     if save_npy:
         print("Saving in npy file", npy_file_name, "....")
@@ -115,6 +120,8 @@ def cnn_head_pose_estimation_images_list(inputFile, verbose=False, save_npy=True
         print("Saved.")
 
     print_time_till_now(start_time)
+
+    return return_val
 
 
 # MAIN
@@ -155,7 +162,7 @@ if __name__ == "__main__":
     # RUN
 
     try:
-        cnn_head_pose_estimation_images_list(inputFile, verbose, save_npy, npy_file_name, save_csv, csv_file_name)
+        return_val = cnn_head_pose_estimation_images_list(inputFile, verbose, save_npy, npy_file_name, save_csv, csv_file_name)
 
     except ValueError as err:
         print(err)
