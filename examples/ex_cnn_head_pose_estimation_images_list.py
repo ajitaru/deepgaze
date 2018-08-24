@@ -81,7 +81,7 @@ def cnn_head_pose_estimation_images_list(inputFile, verbose=False, save_npy=True
         poses = []
 
     try:
-        for image_file in tqdm.tqdm(image_file_names):
+        for i, image_file in tqdm.tqdm(enumerate(image_file_names), total=len(image_file_names)):
             if verbose:
                 tqdm.tqdm.write("Processing image " + image_file)
             elif save_csv:
@@ -96,6 +96,8 @@ def cnn_head_pose_estimation_images_list(inputFile, verbose=False, save_npy=True
                 tqdm.tqdm.write("Estimated [roll, pitch, yaw] : [" + str(roll[0,0,0]) + "," + str(pitch[0,0,0]) + "," + str(yaw[0,0,0])  + "]")
             elif save_npy:
                 poses = np.vstack((poses, [(roll[0,0,0])/25, pitch[0,0,0]/45, yaw[0,0,0]/100]))
+                if (i+1) % 25000 == 0:
+                    print("Saving in npy file", npy_file_name, "...."); np.save(npy_file_name, poses); print("Saved.")
             elif save_csv:
                 poses[-1].append(roll[0,0,0]/25)
                 poses[-1].append(pitch[0,0,0]/45)
